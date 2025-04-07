@@ -76,12 +76,12 @@ static int flb_proxy_input_cb_collect(struct flb_input_instance *ins,
     int ret = FLB_OK;
     size_t len = 0;
     void *data = NULL;
-    struct flb_plugin_input_proxy_context *ctx = (struct flb_plugin_input_proxy_context *) in_context;
+    struct flb_plugin_proxy_context *ctx = (struct flb_plugin_proxy_context *) in_context;
 
 #ifdef FLB_HAVE_PROXY_GO
     if (ctx->proxy->def->proxy == FLB_PROXY_GOLANG) {
         flb_trace("[GO] entering go_collect()");
-        ret = proxy_go_input_collect(ctx->proxy, &data, &len);
+        ret = proxy_go_input_collect(ctx, &data, &len);
 
         if (len == 0) {
             flb_trace("[GO] No logs are ingested");
@@ -110,11 +110,11 @@ static int flb_proxy_input_cb_init(struct flb_input_instance *ins,
                                    struct flb_config *config, void *data)
 {
     int ret = -1;
-    struct flb_plugin_input_proxy_context *ctx;
+    struct flb_plugin_proxy_context *ctx;
     struct flb_plugin_proxy_context *pc;
 
     /* Allocate space for the configuration context */
-    ctx = flb_malloc(sizeof(struct flb_plugin_input_proxy_context));
+    ctx = flb_malloc(sizeof(struct flb_plugin_proxy_context));
     if (!ctx) {
         flb_errno();
         return -1;
@@ -171,7 +171,7 @@ init_error:
 
 static void flb_proxy_input_cb_pause(void *data, struct flb_config *config)
 {
-    struct flb_plugin_input_proxy_context *ctx = data;
+    struct flb_plugin_proxy_context *ctx = data;
     struct flb_plugin_proxy *proxy = (ctx->proxy);
 
     /* pause */
@@ -187,7 +187,7 @@ static void flb_proxy_input_cb_pause(void *data, struct flb_config *config)
 
 static void flb_proxy_input_cb_resume(void *data, struct flb_config *config)
 {
-    struct flb_plugin_input_proxy_context *ctx = data;
+    struct flb_plugin_proxy_context *ctx = data;
     struct flb_plugin_proxy *proxy = (ctx->proxy);
 
     /* resume */
@@ -251,7 +251,7 @@ static void flb_proxy_output_cb_destroy(struct flb_output_plugin *plugin)
 
 static int flb_proxy_input_cb_exit(void *in_context, struct flb_config *config)
 {
-    struct flb_plugin_input_proxy_context *ctx = in_context;
+    struct flb_plugin_proxy_context *ctx = in_context;
     struct flb_plugin_proxy *proxy = (ctx->proxy);
     /* pre_exit (Golang plugin only) */
     void (*cb_pre_exit)(int);

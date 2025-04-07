@@ -1537,7 +1537,7 @@ retry_request:
         flb_plg_debug(ctx->ins, "PutLogEvents http status=%d", c->resp.status);
 
         if (c->resp.status == 200) {
-            if (c->resp.data == NULL || c->resp.data_len == 0 || strcasestr(c->resp.data, AMZN_REQUEST_ID_HEADER) == NULL) {
+            if (c->resp.data == NULL || c->resp.data_len == 0 || strcasecmp(c->resp.data, AMZN_REQUEST_ID_HEADER) == NULL) {
                 /* code was 200, but response is invalid, treat as failure */
                 if (c->resp.data != NULL && c->resp.data_len > 0) {
                     flb_plg_debug(ctx->ins, "Invalid response: full data: `%.*s`", (int) c->resp.data_len, c->resp.data);

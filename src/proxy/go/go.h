@@ -44,6 +44,7 @@ struct flbgo_input_plugin {
 
     int (*cb_init)();
     int (*cb_collect)(void **, size_t *);
+    int (*cb_collect_ctx)(void *, void **, size_t *);
     int (*cb_cleanup)(void *);
     int (*cb_exit)();
 };
@@ -63,10 +64,10 @@ int proxy_go_input_register(struct flb_plugin_proxy *proxy,
                             struct flb_plugin_proxy_def *def);
 
 int proxy_go_input_init(struct flb_plugin_proxy *proxy);
-int proxy_go_input_collect(struct flb_plugin_proxy *ctx,
+int proxy_go_input_collect(struct flb_plugin_proxy_context *ctx,
                            void **collected_data, size_t *len);
 int proxy_go_input_cleanup(struct flb_plugin_proxy *ctx,
                            void *allocated_data);
-int proxy_go_input_destroy(struct flb_plugin_input_proxy_context *ctx);
+int proxy_go_input_destroy(struct flb_plugin_proxy_context *ctx);
 void proxy_go_input_unregister(void *data);
 #endif

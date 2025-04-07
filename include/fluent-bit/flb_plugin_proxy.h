@@ -56,15 +56,10 @@ struct flb_plugin_proxy {
 
 /* This is the context for proxy plugins */
 struct flb_plugin_proxy_context {
+    int coll_fd;
     /* This context is set by the remote init and is passed to remote flush */
     void *remote_context;
     /* A proxy ptr is needed to detect the proxy type/lang (OUTPUT/GOLANG) */
-    struct flb_plugin_proxy *proxy;
-};
-
-struct flb_plugin_input_proxy_context {
-    int coll_fd;
-    /* A proxy ptr is needed to store the proxy type/lang (OUTPUT/GOLANG) */
     struct flb_plugin_proxy *proxy;
 };
 
